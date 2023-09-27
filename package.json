@@ -12,6 +12,8 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@react-native-firebase/app": "^18.5.0",
+    "@react-native-firebase/firestore": "^18.5.0",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.14",
     "@react-navigation/stack": "^6.3.17",
