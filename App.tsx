@@ -19,12 +19,14 @@ import WelcomeScreen from './src/screens/LoginSignUpScreen/WelcomeScreen';
 import LoginScreen from './src/screens/LoginSignUpScreen/LoginScreen';
 import SignUpScreen from './src/screens/LoginSignUpScreen/SignUpScreen';
 import RootNavigation from './src/screens/RootNavigation';
+import { colors } from './src/globals/styles';
 
 const App = () => {
 
   return (
     <View style={styles.container}>
-    
+      <StatusBar barStyle={'light-content'}
+      backgroundColor={colors.primary_key}/>
       <RootNavigation/>
     </View>
   );

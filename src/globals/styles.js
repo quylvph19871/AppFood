@@ -39,5 +39,17 @@ module.exports = {
         fontWeight: '700',
         marginBottom: 10
 
+    },
+    veg: {
+        backgroundColor: 'green',
+        width: 8,
+        height: 8,
+        borderRadius: 5,
+    },
+    nonveg: {
+        backgroundColor: 'red',
+        width: 8,
+        height: 8,
+        borderRadius: 5,
     }
 }
