@@ -1,7 +1,11 @@
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { colors, titles, styleButton, buttonTitle } from '../../globals/styles'
 import { Icon } from 'react-native-elements'
+import auth from '@react-native-firebase/auth'
+import firestore from '@react-native-firebase/firestore'
+
+
 
 const SignUpScreen = ({ navigation }) => {
   const [emailfocus, setEmailFocus] = useState(false);
@@ -14,11 +18,104 @@ const SignUpScreen = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showcPassword, setShowcPassword] = useState(false);
 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [cpassword, setcPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
+
+  const [customError, setCustomError] = useState('');
+  const [successmsg, setSuccessmsg] = useState(null);
+ 
+
+
+  const handleSignup = () => {
+    const formData = {
+      email: email,
+      password: password,
+      // cpassword : cpassword,
+      name: name,
+      phone: phone,
+      address: address
+    }
+
+    const phoneRegex = /^\d{10}$/;
+
+    if (name.trim().length == 0) {
+      setCustomError("Vui lòng nhập tên")
+      return;
+    } else if (password != cpassword) {
+      setCustomError("Mật khẩu xác nhận sai")
+      return;
+    } else if (!phoneRegex.test(phone)) {
+      setCustomError("Hãy nhập đúng số 10 kí tự")
+      return;
+    }
+
+    try {
+      auth().createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          console.log('user created');
+          setSuccessmsg('Bạn đã tạo tài khoản thành công');
+          const userRef = firestore().collection('UserData');
+          Alert.alert(
+            "Thông báo",
+            "Bạn có muốn thoát không?",
+            [
+              {
+                text: "Hủy",
+                onPress: () => {
+                
+                },
+              },
+              {
+                text: "Đồng ý",
+                onPress: () => {
+                  navigation.navigate('SignInScreen')
+                },
+              },
+            ],
+          );
+          
+
+          userRef.add(formData).then(() => {
+            console.log("Dữ liệu đã thêm vào firebase");
+            setSuccessmsg('Tạo tài khoản thành công');
+          }).catch((error) => {
+            console.log("Dữ liệu vào firebase thất bại", error)
+          })
+        })
+        .catch((error) => {
+          console.log(error.message);
+          if (error.message == '[auth/email-already-in-use] The email address is already in use by another account.') {
+            setCustomError("Email đã tồn tại")
+
+          } else if (error.message == '[auth/email-already-in-use] The email address is already in use by another account.') {
+            setCustomError("Email không hợp lệ")
+
+          } else if (error.message == '[auth/email-already-in-use] The email address is already in use by another account.') {
+            setCustomError("mật khẩu trên 6 kí tự")
+
+          } else {
+            setCustomError(error.message)
+
+          }
+
+        })
+    } catch (error) {
+      console.log('Đăng ký hệ thống thất bại ', error.message);
+
+    }
+  }
+
 
   return (
+    // <View style={styles.container}>
+    //   {successmsg == null ?
     <View style={styles.container}>
       <Text style={titles}>Đăng ký</Text>
-
+      {customError !== '' && <Text style={styles.errormsg}>{customError}</Text>}
       <View style={styles.inputout}>
         <Icon
           type='material-community'
@@ -32,8 +129,10 @@ const SignUpScreen = ({ navigation }) => {
             setPasswordFocus(false)
             setShowPassword(false)
             setPhoneFocus(false)
+            setCustomError('')
 
-          }} />
+          }}
+          onChangeText={(text) => setName(text)} />
       </View>
 
 
@@ -50,8 +149,9 @@ const SignUpScreen = ({ navigation }) => {
             setPhoneFocus(false)
             setNameFocus(false)
             setcPasswordFocus(false)
-
-          }} />
+            setCustomError('')
+          }}
+          onChangeText={(text) => setEmail(text)} />
       </View>
       <View style={styles.inputout}>
         <Icon
@@ -66,7 +166,9 @@ const SignUpScreen = ({ navigation }) => {
             setPasswordFocus(false)
             setcPasswordFocus(false)
             setNameFocus(false)
-          }} />
+            setCustomError('')
+          }}
+          onChangeText={(text) => setPhone(text)} />
       </View>
 
       <View style={styles.inputout}>
@@ -83,9 +185,11 @@ const SignUpScreen = ({ navigation }) => {
             setcPasswordFocus(false)
             setPhoneFocus(false)
             setNameFocus(false)
+            setCustomError('')
           }
           }
           secureTextEntry={showPassword === false ? true : false}
+          onChangeText={(text) => setPassword(text)}
         />
         <Icon
           name={showPassword == false ? 'visibility-off' : 'visibility'}
@@ -111,9 +215,11 @@ const SignUpScreen = ({ navigation }) => {
             setEmailFocus(false)
             setPasswordFocus(false)
             setNameFocus(false)
+            setCustomError('')
           }
           }
           secureTextEntry={showcPassword === false ? true : false}
+          onChangeText={(text) => setcPassword(text)}
         />
         <Icon
           name={showcPassword == false ? 'visibility-off' : 'visibility'}
@@ -125,21 +231,23 @@ const SignUpScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.address}>
-      
-        <TextInput style={styles.inputaddress} placeholder='Bạn hãy nhập địa chỉ'
-          onFocus={() => {
-            setEmailFocus(true)
-            setPasswordFocus(false)
-            setPhoneFocus(false)
-            setNameFocus(false)
-            setcPasswordFocus(false)
 
-          }} />
+        <TextInput style={styles.inputaddress} placeholder='Bạn hãy nhập địa chỉ'
+          onPress={() => {
+            setNameFocus(false)
+            setEmailFocus(false)
+            setPasswordFocus(false)
+            setShowPassword(false)
+            setPhoneFocus(false)
+            setCustomError('')
+          }}
+          onChangeText={(text) => setAddress(text)}
+        />
       </View>
 
 
       <TouchableOpacity style={styleButton}
-
+        onPress={() => handleSignup()}
       >
         <Text style={buttonTitle}>Đăng ký</Text>
       </TouchableOpacity>
@@ -148,7 +256,7 @@ const SignUpScreen = ({ navigation }) => {
       <View style={styles.view}>
         <Text style={styles.textOr}>OR</Text>
       </View>
-{/* 
+      {/* 
       <View style={styles.socialContainer}>
         <TouchableOpacity>
           <View style={styles.socialView}>
@@ -181,6 +289,30 @@ const SignUpScreen = ({ navigation }) => {
       </TouchableOpacity>
 
     </View>
+    // : <View style={styles.container1}>
+    //   <View style={styles.viewsuccssmsg}>
+    //     <Text style={styles.successmsg}>{successmsg}</Text>
+
+    //     <View style={styles.viewStyleButton}>
+    //       <TouchableOpacity style={styles.styleButtonmsg}
+    //         onPress={() => navigation.navigate('SignInScreen')}
+    //       >
+    //         <Text style={styles.buttonTitlemsg}>OK</Text>
+    //       </TouchableOpacity>
+
+    //       <TouchableOpacity style={styles.styleButtonmsg}
+    //         onPress={() => setSuccessmsg(null)}
+    //       >
+    //         <Text style={styles.buttonTitlemsg}>Cancel</Text>
+    //       </TouchableOpacity>
+    //     </View>
+    //   </View>
+
+
+
+    // </View>}
+    // </View>
+
   )
 }
 
@@ -254,18 +386,15 @@ const styles = StyleSheet.create({
     borderColor: colors.button,
     height: 50,
     width: '90%',
-    alignItems: "center",
-    justifyContent: "center",
     marginTop: 10,
-
 
   },
   createButtonTitle: {
     color: colors.button,
     fontSize: 18,
     fontWeight: '600',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'center',
     marginTop: -3,
 
   },
@@ -288,5 +417,59 @@ const styles = StyleSheet.create({
     marginLeft: 5,
 
   },
+  errormsg: {
+    fontSize: 14,
+
+  },
+  container1: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: -30,
+  },
+  viewsuccssmsg: {
+    width: '90%',
+    height: '24%',
+
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.grey7,
+    borderRadius: 5,
+    elevation: 1
+  },
+  successmsg: {
+    fontSize: 20,
+    marginHorizontal: 15,
+    paddingVertical: 10,
+    color: colors.grey1,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  viewStyleButton: {
+    flexDirection: 'row',
+    width: "100%",
+    justifyContent: 'flex-end',
+    marginHorizontal: -10,
+    marginTop: 30,
+
+  },
+  styleButtonmsg: {
+    backgroundColor: "white",
+    width: "25%",
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+    marginHorizontal: 5
+  },
+  buttonTitlemsg: {
+    fontSize: 18,
+    fontWeight: '600',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: -3,
+
+  }
 
 })

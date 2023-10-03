@@ -1,9 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "@firebase/firestore"
-import {getStorage} from "@firebase/storage"
-// import firebase from 'firebase/compat/app'
-// import { initializeApp } from 'firebase/compat/app'
-// import { getFirestore } from 'firebase/compat/firestore';
+import { getFirestore } from "@react-native-firebase/firestore"
+import { getStorage } from "@firebase/storage"
+import { getAuth } from 'firebase/auth'
 
 const firebaseConfig = {
     apiKey: "AIzaSyBkyP5notmdNjfwbpkkx6pSTwOhpzZ8wSc",
@@ -18,5 +16,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
+const auth = getAuth(app)
 
-export { db, storage };
+export { db, storage, auth};

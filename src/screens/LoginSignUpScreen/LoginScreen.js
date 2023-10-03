@@ -2,16 +2,65 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-nativ
 import React, { useState } from 'react'
 import { colors, titles, styleButton, buttonTitle } from '../../globals/styles'
 import { Icon } from 'react-native-elements'
+import auth from '@react-native-firebase/auth'
+import firebase from '@react-native-firebase/app'
+import firestore from '@react-native-firebase/firestore'
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const [emailfocus, setEmailFocus] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [customError, setCustomError] = useState('');
+
+  
+
+  const handleLogin = () => {
+    if (!validateEmail(email)) {
+      setCustomError('Vui lòng nhập đúng email bạn đã đăng ký')
+      return;
+    }
+    if (!validatePassword(password)) {
+      setCustomError('Vui lòng nhập đúng mật khẩu bạn đã đăng ký')
+      return;
+    }
+    if (!validateEmail(email) && !validatePassword(password)) {
+      setCustomError('Email hoặc mật khẩu không đúng')
+      return;
+    }
+    auth().signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log('Logged in successflly');
+        console.log(user);
+        navigation.navigate('Home')
+      }).catch((error) => {
+        const errorMessage = error.message;
+        console.log(errorMessage);
+        if (errorMessage === '[auth/invalid-login] An internal error has occurred. [ INVALID_LOGIN_CREDENTIALS ]') {
+          setCustomError('Bạn hãy điền đúng email')
+        } else {
+          setCustomError('Email và mật khẩu không đúng')
+        }
+      })
+  };
+  const validateEmail = (email) => {
+    const regex = /^\w+@\w+\.\w+$/;
+    return regex.test(email);
+  };
+
+  const validatePassword = (password) => {
+    const regex = /^[a-zA-Z0-9]{6,}$/;
+    return regex.test(password);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={titles}>Đăng nhập</Text>
-
+      {customError !== '' && <Text style={styles.errormsg}>{ customError}</Text>}
 
       <View style={styles.inputout}>
         <Icon
@@ -24,7 +73,9 @@ const LoginScreen = ({navigation}) => {
             setEmailFocus(true)
             setPasswordFocus(false)
             setShowPassword(false)
-          }} />
+            setCustomError('')
+          }}
+          onChangeText={(text) => { setEmail(text) }} />
       </View>
       <View style={styles.inputout}>
         <Icon
@@ -38,12 +89,14 @@ const LoginScreen = ({navigation}) => {
           onFocus={() => {
             setEmailFocus(false)
             setPasswordFocus(true)
+            setCustomError('')
           }
           }
           secureTextEntry={showPassword === false ? true : false}
+          onChangeText={(text) => { setPassword(text) }}
         />
         <Icon
-          name={showPassword == false ? 'visibility-off' : 'visibility'}
+          name={showPassword === false ? 'visibility-off' : 'visibility'}
           color={colors.grey1}
           size={25}
           type='material'
@@ -53,7 +106,7 @@ const LoginScreen = ({navigation}) => {
 
 
       <TouchableOpacity style={styleButton}
-        onPress={()=>navigation.navigate('Home')}
+        onPress={() => handleLogin()}
       >
         <Text style={buttonTitle}>Đăng nhập</Text>
       </TouchableOpacity>
@@ -100,7 +153,7 @@ const LoginScreen = ({navigation}) => {
         <Text style={styles.textacc}>Hãy đăng ký tài khoản ở đây? </Text>
         <Text style={styles.createButtonTitle} onPress={() => navigation.navigate('SignUpScreen')}>Đăng ký</Text>
       </View>
-    
+
 
     </View>
   )
@@ -114,7 +167,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: "center",
     justifyContent: "center",
-  
+
   },
   inputout: {
     flexDirection: 'row',
@@ -178,7 +231,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 10,
- 
+
 
   },
   createButtonTitle: {
@@ -201,7 +254,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: -3,
-  }
-  
+  },
+  errormsg: {
+    fontSize: 15,
+
+  },
+
 
 })
