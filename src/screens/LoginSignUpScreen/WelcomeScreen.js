@@ -1,10 +1,12 @@
 import {StyleSheet,  View, Text, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { colors, parameters, styleButton, buttonTitle } from '../../globals/styles';
 import Swiper from 'react-native-swiper';
 
 
 const WelcomeScreen = ({ navigation }) => {
+   
+
   return (
       <View style={styles.container}>
 

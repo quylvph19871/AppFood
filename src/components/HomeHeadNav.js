@@ -3,7 +3,7 @@ import React from 'react'
 import { colors, titles, styleButton, buttonTitle } from '../globals/styles'
 import { Icon } from 'react-native-elements'
 
-const HomeHeadNav = () => {
+const HomeHeadNav = ({ navigation }) => {
     return (
         <View >
             <View style={styles.headicon}>
@@ -16,6 +16,7 @@ const HomeHeadNav = () => {
                 <Text style={styles.text}>Food</Text>
 
                 <Icon
+                    onPress={() => navigation.navigate('userprofile')}
                     type='material-community'
                     name='account-circle-outline'
                     color={colors.white}

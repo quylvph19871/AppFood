@@ -27,18 +27,11 @@ const SignUpScreen = ({ navigation }) => {
 
   const [customError, setCustomError] = useState('');
   const [successmsg, setSuccessmsg] = useState(null);
- 
+
 
 
   const handleSignup = () => {
-    const formData = {
-      email: email,
-      password: password,
-      // cpassword : cpassword,
-      name: name,
-      phone: phone,
-      address: address
-    }
+
 
     const phoneRegex = /^\d{10}$/;
 
@@ -55,36 +48,46 @@ const SignUpScreen = ({ navigation }) => {
 
     try {
       auth().createUserWithEmailAndPassword(email, password)
-        .then(() => {
+        .then((userCredentials) => {
+          console.log(userCredentials?.user.uid);
           console.log('user created');
           setSuccessmsg('Bạn đã tạo tài khoản thành công');
-          const userRef = firestore().collection('UserData');
-          Alert.alert(
-            "Thông báo",
-            "Bạn có muốn thoát không?",
-            [
-              {
-                text: "Hủy",
-                onPress: () => {
-                
-                },
-              },
-              {
-                text: "Đồng ý",
-                onPress: () => {
-                  navigation.navigate('SignInScreen')
-                },
-              },
-            ],
-          );
-          
+        
+          if (userCredentials?.user.uid) {
+            const userRef = firestore().collection('UserData');
+            Alert.alert(
+              "Thông báo",
+              "Bạn có muốn thoát không?",
+              [
+                {
+                  text: "Hủy",
+                  onPress: () => {
 
-          userRef.add(formData).then(() => {
-            console.log("Dữ liệu đã thêm vào firebase");
-            setSuccessmsg('Tạo tài khoản thành công');
-          }).catch((error) => {
-            console.log("Dữ liệu vào firebase thất bại", error)
-          })
+                  },
+                },
+                {
+                  text: "Đồng ý",
+                  onPress: () => {
+                    navigation.navigate('SignInScreen')
+                  },
+                },
+              ],
+            );
+            userRef.add({
+              email: email,
+              password: password,
+              // cpassword : cpassword,
+              name: name,
+              phone: phone,
+              address: address,
+              uid: userCredentials?.user.uid
+            }).then(() => {
+              console.log("Dữ liệu đã thêm vào firebase");
+              setSuccessmsg('Tạo tài khoản thành công');
+            }).catch((error) => {
+              console.log("Dữ liệu vào firebase thất bại", error)
+            })
+          }
         })
         .catch((error) => {
           console.log(error.message);

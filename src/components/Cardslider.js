@@ -1,10 +1,14 @@
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native'
+import { StyleSheet, Text, View, Image, FlatList , TouchableOpacity} from 'react-native'
 import React from 'react'
 import { colors, nonveg, veg } from '../globals/styles'
 
-const Cardslider = ({ title, data }) => {
+const Cardslider = ({ title, data , navigation}) => {
     // console.log(data)
     // console.log(title)
+    const openProductPage = (item) => {
+        // console.log(item)
+        navigation.navigate('Productpage', item)
+    }
     return (
         <View style={styles.container}>
             <Text style={styles.cartTitle}>{title}</Text>
@@ -15,8 +19,10 @@ const Cardslider = ({ title, data }) => {
                 showsHorizontalScrollIndicator={false}
                 data={data}
                 renderItem={({ item }) => (
-                    
-                        <View style={styles.card}>
+                    <TouchableOpacity key={item.index} onPress={() => {
+                        openProductPage(item)
+                        }}>
+                         <View style={styles.card}>
                              <View style={styles.viewimg}>
                             <Image source={{
                                 uri: item.foodImageUrl
@@ -26,7 +32,7 @@ const Cardslider = ({ title, data }) => {
                             <Text style={styles.nametxt}>{item.foodName}</Text>
                             <View style={styles.viewprice}>
                                 <Text style={styles.pricetxt}>
-                                Giá: {item.foodPrice}vnđ
+                                        Giá: {item.foodPrice}₫
                                 </Text>
                             {item.foodType == 'veg' ? <Text style={veg}></Text> : <Text style={nonveg}></Text>}
                             </View>
@@ -34,7 +40,9 @@ const Cardslider = ({ title, data }) => {
                         <View style={styles.s3}>
                             <Text style={styles.buybtn}>Buy</Text>
                         </View>
-                        </View>   
+                        </View>  
+                        </TouchableOpacity>
+                        
 
                 )}
             />

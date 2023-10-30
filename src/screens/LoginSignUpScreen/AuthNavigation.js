@@ -5,6 +5,8 @@ import WelcomeScreen from './WelcomeScreen';
 import LoginScreen from './LoginScreen';
 import SignUpScreen from './SignUpScreen';
 import HomeScreen from '../HomeScreen';
+import Userprofile from '../Userprofile';
+import Productpage from '../Productpage';
 
 
 const Auth = createStackNavigator();
@@ -38,6 +40,20 @@ const AuthNavigation = () => {
           <Auth.Screen
               name='Home'
               component={HomeScreen}
+              options={{
+                  headerShown: false
+              }}
+          />
+          <Auth.Screen
+              name='userprofile'
+              component={Userprofile}
+              options={{
+                  headerShown: false
+              }}
+          />
+          <Auth.Screen
+              name='Productpage'
+              component={Productpage}
               options={{
                   headerShown: false
               }}

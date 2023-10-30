@@ -114,7 +114,8 @@ const styles = StyleSheet.create({
     width: 100,
     height: 40,
     size: 25,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   viewcontent: {
     // height: 150,
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
     overflow: 'ellipsis',
   },
   text: {
-    marginVertical: 5,
+  
     justifyContent: 'center',
     alignSelf: 'center',
     height:40 

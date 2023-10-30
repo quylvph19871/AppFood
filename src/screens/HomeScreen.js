@@ -10,7 +10,7 @@ import firestore from '@react-native-firebase/firestore'
 import Cardslider from '../components/Cardslider'
 
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
     const [foodData, setFoodData] = useState([]);
     const [vegData, setVegData] = useState([]);
     const [nonVegData, setNonVegData] = useState([]);
@@ -39,11 +39,11 @@ const HomeScreen = () => {
 
 
     return (
-        <View style={{flex:1}}>
+        <View style={{ flex: 1 }}>
             {/* <HomeHeadNav /> */}
-            
+
             <View style={styles.headnav}>
-                <HomeHeadNav />
+                <HomeHeadNav navigation={navigation} />
                 <View style={styles.inputout}>
                     <Icon
                         style={styles.icon}
@@ -51,10 +51,10 @@ const HomeScreen = () => {
                         name='search'
                     />
                     <TextInput style={styles.input} placeholder='Search'
-                    onChangeText={(text)=>{setSeach(text)}}/>
+                        onChangeText={(text) => { setSeach(text) }} />
                 </View>
 
-                 {search != '' && <View style={styles.searchresultsouter}>
+                {search != '' && <View style={styles.searchresultsouter}>
                     <FlatList style={styles.searchresultsinner}
                         data={foodData}
                         renderItem={({ item }) => {
@@ -67,16 +67,16 @@ const HomeScreen = () => {
                             }
                         }}
                     />
-             </View>}
+                </View>}
             </View>
-           
+
             <ScrollView
                 showsVerticalScrollIndicator={false}>
                 <OfferSlider />
                 <Categories />
-                <Cardslider title={"Ngày đặc biệt hôm nay"} data={foodData} />
-                <Cardslider title={"Món không chay"} data={nonVegData} />
-                <Cardslider title={"Món chay"} data={vegData} />
+                <Cardslider title={"Ngày đặc biệt hôm nay"} data={foodData} navigation={navigation} />
+                <Cardslider title={"Món không chay"} data={nonVegData} navigation={navigation} />
+                <Cardslider title={"Món chay"} data={vegData} navigation={navigation} />
 
             </ScrollView>
 
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     headnav: {
         backgroundColor: colors.primary_key,
         elevation: 5,
-    
+
     },
     icon: {
         color: colors.grey3,
@@ -140,14 +140,14 @@ const styles = StyleSheet.create({
         width: '100%',
         borderBottomColor: colors.grey5,
         borderBottomWidth: 1,
-       
+
     },
     searchresultText: {
         marginLeft: 15,
         fontSize: 18,
         color: colors.grey1,
         marginVertical: 15,
-      
+
     }
 
 })
