@@ -7,6 +7,8 @@ import SignUpScreen from './SignUpScreen';
 import HomeScreen from '../HomeScreen';
 import Userprofile from '../Userprofile';
 import Productpage from '../Productpage';
+import UserCart from '../UserCart';
+import Order from '../Order';
 
 
 const Auth = createStackNavigator();
@@ -54,6 +56,20 @@ const AuthNavigation = () => {
           <Auth.Screen
               name='Productpage'
               component={Productpage}
+              options={{
+                  headerShown: false
+              }}
+          />
+          <Auth.Screen
+              name='Cart'
+              component={UserCart}
+              options={{
+                  headerShown: false
+              }}
+          />
+          <Auth.Screen
+              name='Order'
+              component={Order}
               options={{
                   headerShown: false
               }}

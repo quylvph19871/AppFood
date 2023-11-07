@@ -72,5 +72,19 @@ module.exports = {
         top: 0,
         left: 0,
         zIndex: 4
-    }
+    },
+    // headnav: {
+    //     flexDirection: 'row',
+    //     alignItems: 'center',
+    //     backgroundColor: colors.white,
+    //     width: '100%',
+    //     height: 55,
+    //     elevation: 3
+    // },
+    // navbtn1: {
+    //     width: 50,
+    //     height: 50,
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    // },
 }

@@ -17,6 +17,9 @@ const Productpage = ({ navigation, route }) => {
     const [quantity, setQuantity] = useState('1');
     const [addonquantity, setAddonquantity] = useState('0');
     const [tongtien, setTongTien] = useState('')
+    const [showProduct, setShowProduct] = useState(false);
+
+    
     const addToCart = () => {
         // console.log("theem gio hang");
         const docRef = firestore().collection('UserCart').doc(auth().currentUser.uid);
@@ -196,12 +199,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.primary_key,
-        borderRadius: 5
+        borderRadius: 2
     },
     hs: {
-        fontSize: 24,
+        fontSize: 20,
         color: colors.grey1,
-        marginLeft: 10,
+        marginLeft: 5,
         fontWeight: '400'
     },
     container1: {
@@ -274,7 +277,7 @@ const styles = StyleSheet.create({
     },
     hr1: {
         width: "10%",
-        height: 1,
+        height: 0.5,
         backgroundColor: colors.grey5,
         marginHorizontal: 10,
         justifyContent: 'center',
@@ -306,7 +309,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 4,
         paddingVertical: 2,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: colors.grey5,
         borderTopLeftRadius: 3,
         borderBottomLeftRadius: 3,
@@ -319,7 +322,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 2,
         paddingVertical: 2,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderColor: colors.grey5,
         borderTopRightRadius: 3,
         borderBottomRightRadius: 3
@@ -330,8 +333,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: '300',
         color: colors.grey2,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
+        borderTopWidth: 0.5,
+        borderBottomWidth: 0.5,
         borderColor: colors.grey5,
         paddingHorizontal: 5,
         paddingVertical: 0

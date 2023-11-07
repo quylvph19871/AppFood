@@ -8,6 +8,7 @@ import OfferSlider from '../components/OfferSlider'
 
 import firestore from '@react-native-firebase/firestore'
 import Cardslider from '../components/Cardslider'
+import BottomNav from '../components/BottomNav'
 
 
 const HomeScreen = ({ navigation }) => {
@@ -68,9 +69,9 @@ const HomeScreen = ({ navigation }) => {
                         }}
                     />
                 </View>}
-            </View>
+            </View> 
 
-            <ScrollView
+            <ScrollView style={{backgroundColor: colors.white}}
                 showsVerticalScrollIndicator={false}>
                 <OfferSlider />
                 <Categories />
@@ -79,6 +80,10 @@ const HomeScreen = ({ navigation }) => {
                 <Cardslider title={"Món chay"} data={vegData} navigation={navigation} />
 
             </ScrollView>
+            <View style={styles.bottomnav}>
+                <BottomNav navigation={navigation} />
+            </View>
+           
 
 
 
@@ -147,7 +152,13 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: colors.grey1,
         marginVertical: 15,
-
+    },
+    bottomnav: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        backgroundColor: colors.white,
+        zIndex: 4
     }
 
 })

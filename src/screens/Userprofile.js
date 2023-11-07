@@ -118,9 +118,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     hs: {
-        fontSize: 24,
+        fontSize: 20,
         color: colors.grey1,
-        marginLeft: 10,
+        marginLeft: 5,
         fontWeight: '400'
     },
     containerin: {
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 10,
         borderWidth: 1,
-        elevation: 2
+        elevation: 1
      
     }, head2: {
         fontSize: 18,
