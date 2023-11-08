@@ -37,9 +37,7 @@ const Cardslider = ({ title, data , navigation}) => {
                             {item.foodType == 'veg' ? <Text style={veg}></Text> : <Text style={nonveg}></Text>}
                             </View>
                         </View>
-                        <View style={styles.s3}>
-                            <Text style={styles.buybtn}>Buy</Text>
-                        </View>
+                        
                         </View>  
                         </TouchableOpacity>
                         
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
    
     card: {
         width: 150,
-        height: 300,
+        height: 250,
         // backgroundColor: 'aqua'
         margin: 10,
         borderRadius: 5,

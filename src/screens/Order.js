@@ -118,7 +118,7 @@ const Order = ({ navigation, route }) => {
             <View style={styles.headnav}>
                 <View style={styles.navbtn}>
                     <Icon
-                        onPress={() => navigation.navigate('Home')}
+                        onPress={() => navigation.navigate('Cart')}
                         style={navbtnin}
                         color={colors.primary_key}
                         size={35}
@@ -382,6 +382,7 @@ const styles = StyleSheet.create({
         height: 75,
         paddingHorizontal: 10,
         borderColor: colors.grey7,
+        marginBottom: 10
     },
     viewiconlocation: {
         width: 25,

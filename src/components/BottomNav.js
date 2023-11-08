@@ -42,15 +42,15 @@ const BottomNav = ({navigation}) => {
               </TouchableOpacity>
           </View>
           <View>
-              <TouchableOpacity style={styles.inputout} onPress={() => navigation.navigate('Home')}>
+              <TouchableOpacity style={styles.inputout} onPress={() => navigation.navigate('Track')}>
                   <Icon
                       style={styles.icon}
                       size={25}
                       color={colors.grey2}
                       type='material-community'
-                      name='map-marker-outline'
+                      name='note-text-outline'
                   />
-                  <Text style={styles.text}>Bản đồ</Text>
+                  <Text style={styles.text}>Đơn hàng</Text>
               </TouchableOpacity>
           </View>
 

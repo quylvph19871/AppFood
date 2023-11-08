@@ -24,7 +24,7 @@ const Productpage = ({ navigation, route }) => {
         // console.log("theem gio hang");
         const docRef = firestore().collection('UserCart').doc(auth().currentUser.uid);
 
-        const data1 = { data, Addonquantity: addonquantity, Foodquantity: quantity}
+        const data1 = { data, Addonquantity: addonquantity, Foodquantity: quantity }
         //console.log("data1", data1);
 
         docRef.get().then((doc) => {
@@ -62,12 +62,16 @@ const Productpage = ({ navigation, route }) => {
         }
     }
     // console.log(data.foodAddonPrice);
+
+    console.log({ cart: [{ Addonquantity: addonquantity, Foodquantity: quantity, data }] });
+
+    const cartData = JSON.stringify({ cart: [{ Addonquantity: addonquantity, Foodquantity: quantity, data }] })
     return (
         <View style={styles.container}>
             <View style={styles.headnav}>
                 <View style={styles.navbtn}>
                     <Icon
-                        onPress={() => navigation.navigate('Home')}
+                        onPress={() => navigation.navigate('Cart')}
                         style={navbtnin}
                         color={colors.primary_key}
                         size={35}
@@ -162,7 +166,11 @@ const Productpage = ({ navigation, route }) => {
 
 
             <View style={styles.view}>
-                <TouchableOpacity style={styles.btn}>
+                <TouchableOpacity style={styles.btn}
+                    onPress={() => {
+                        navigation.navigate('Order', { cartData })
+                    }} 
+                  >
                     <Text style={styles.head3}>Mua hàng</Text>
                 </TouchableOpacity>
             </View>

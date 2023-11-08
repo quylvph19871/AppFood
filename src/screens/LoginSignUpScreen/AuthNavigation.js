@@ -9,6 +9,7 @@ import Userprofile from '../Userprofile';
 import Productpage from '../Productpage';
 import UserCart from '../UserCart';
 import Order from '../Order';
+import TrackOrder from '../TrackOrder';
 
 
 const Auth = createStackNavigator();
@@ -70,6 +71,14 @@ const AuthNavigation = () => {
           <Auth.Screen
               name='Order'
               component={Order}
+              options={{
+                  headerShown: false
+              }}
+          />
+
+          <Auth.Screen
+              name='Track'
+              component={TrackOrder}
               options={{
                   headerShown: false
               }}
